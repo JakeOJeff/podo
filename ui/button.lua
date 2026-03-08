@@ -9,6 +9,8 @@ function Button.new(x, y, data, font, padding, radius, strokeSize, color, stroke
     self.x = x or 10
     self.y = y or 10
 
+    self.data = data or "Button"
+
     self.font = LG.getFont()
 
     self.padding = padding or 10
@@ -16,7 +18,8 @@ function Button.new(x, y, data, font, padding, radius, strokeSize, color, stroke
     
     self.strokeSize = strokeSize or 2
 
-    self.w = self.font:getWidth()
+    self.w = self.font:getWidth(self.data) + self.padding + self.strokeSize
+    self.h = self.font:getHeight() + self.padding
     
     self.color = color or {1, 1, 1}
     self.stroke = stroke or nil
@@ -34,7 +37,12 @@ end
 
 function Button.draw()
     LG.setFont(self.font)
-    LG.rectangle()
+
+    LG.setColor(self.color)
+    LG.rectangle("fill",self.x, self.y, self.w, self.h)
+
+    LG.setColor(self.stroke)
+    LG.print(self.data, self.x + self.w/2, self.y + self.h/2 )
 end
 
 return Button
