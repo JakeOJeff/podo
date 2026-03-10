@@ -1,4 +1,5 @@
 
+LG = love.graphics
 
 -- Declaring Global variables
 TIMER = 0
@@ -10,9 +11,7 @@ TIMERS  = {
     ["LBR"] = 10 * 60
 }
 
-
-
-LG = love.graphics
+Button = require "ui.button "
 
 
 function love.load()

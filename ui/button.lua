@@ -11,7 +11,7 @@ function Button.new(x, y, data, font, padding, radius, strokeSize, color, stroke
 
     self.data = data or "Button"
 
-    self.font = LG.getFont()
+    self.font = font or LG.getFont()
 
     self.padding = padding or 10
     self.radius = radius or 5
@@ -31,11 +31,11 @@ function Button.new(x, y, data, font, padding, radius, strokeSize, color, stroke
     return self
 end
 
-function Button.update(dt)
+function Button:update(dt)
     
 end
 
-function Button.draw()
+function Button:draw()
     LG.setFont(self.font)
 
     LG.setColor(self.color)
@@ -43,6 +43,19 @@ function Button.draw()
 
     LG.setColor(self.stroke)
     LG.print(self.data, self.x + self.w/2, self.y + self.h/2 )
+end
+
+
+function UpdateButtons(dt)
+    for _, v in ipairs(ActiveButtons) do
+        v:update(dt)
+    end
+end
+
+function DrawButtons()
+    for _, v in ipairs(ActiveButtons) do
+        v:draw()
+    end
 end
 
 return Button
