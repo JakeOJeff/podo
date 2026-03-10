@@ -78,8 +78,8 @@ function Button:draw()
     LG.setColor(1,1,1)
 end
 
-function Button:mousepressed()
-    if self.hovered then
+function Button:mousepressed(button)
+    if self.hovered and button == 1 then
         self.func()        
     end
 end
@@ -94,6 +94,12 @@ end
 function DrawButtons()
     for _, v in ipairs(ActiveButtons) do
         v:draw()
+    end
+end
+
+function MousePressedButtons(x, y, button)
+    for _, v in ipairs(ActiveButtons) do
+        v:mousepressed(button)
     end
 end
 

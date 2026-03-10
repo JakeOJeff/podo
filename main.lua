@@ -25,7 +25,8 @@ Button = require "ui.button"
 function love.load()
     TIMER = TIMERS[MODE]
 
-    Butt = Button.new(SwitchStatus, 200, 200, "Image", "play.png")
+    Butt = Button.new(SwitchStatus, 200, 200, "Image", "play.png", fonts.m, 20, 200)
+
 end
 
 function love.update(dt)
@@ -40,6 +41,10 @@ function love.keypressed(key)
     if key == "space" then
         SwitchStatus()
     end
+end
+
+function love.mousepressed(x, y, button)
+    MousePressedButtons(x, y, button)
 end
 
 function love.draw()
