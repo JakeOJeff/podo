@@ -13,7 +13,8 @@ TIMERS = {
 wW, wH = love.graphics.getDimensions()
 
 fonts = {
-    h = love.graphics.newFont("StardosStencil-Bold.ttf", 45)
+    h = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 45),
+    m = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 25),
 }
 
 Button = require "ui.button"
@@ -21,6 +22,8 @@ Button = require "ui.button"
 
 function love.load()
     TIMER = TIMERS[MODE]
+
+    Butt = Button.new()
 end
 
 function love.update(dt)

@@ -14,7 +14,7 @@ function Button.new(func, x, y, data, font, padding, radius, strokeSize, color, 
 
     self.data = data or "Button"
 
-    self.font = font or LG.getFont()
+    self.font = font or fonts.h
 
     self.padding = padding or 10
     self.radius = radius or 5
@@ -61,6 +61,8 @@ function Button:draw()
     local tx = self.x + (self.w / 2) - (self.font:getWidth(self.data) / 2)
     local ty = self.y + (self.h / 2) - (self.font:getHeight() / 2)
     LG.print(self.data, tx, ty)
+
+    LG.setColor(1,1,1)
 end
 
 function Button:mousepressed()
