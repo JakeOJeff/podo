@@ -28,8 +28,8 @@ function Button.new(func, x, y, dataType, data, font, padding, radius, strokeSiz
     
     self.strokeSize = strokeSize or 2
 
-    self.w = self.font:getWidth(self.data) + self.padding + self.strokeSize
-    self.h = self.font:getHeight() + self.padding
+    self.w = (self.dataType == "Text" and self.font:getWidth(self.data) or (self.dataType == "Image" and self.data:getWidth())) + self.padding + self.strokeSize
+    self.h = (self.dataType == "Text" and self.font:getHeight()) or (self.dataType == "Image" and self.data:getHeight() )+ self.padding
     
     self.color = color or {1, 1, 1}
     self.stroke = stroke or {0, 0, 0}
