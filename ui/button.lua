@@ -2,7 +2,7 @@ Button = {}
 Button.__index = Button
 ActiveButtons = {}
 
-function Button.new(func, x, y, data, font, padding, radius, strokeSize, color, stroke, colorHover, strokeHover, duration)
+function Button.new(func, x, y, dataType, data, font, padding, radius, strokeSize, color, stroke, colorHover, strokeHover, duration)
     local self = setmetatable({}, Button)
 
     self.func = func or function ()
@@ -12,7 +12,14 @@ function Button.new(func, x, y, data, font, padding, radius, strokeSize, color, 
     self.x = x or 10
     self.y = y or 10
 
-    self.data = data or "Button"
+    self.dataType = dataType or "Text"
+
+    if dataType == "Image" then
+        self.data = LG.newImage("assets/"..data)
+    elseif dataType == "Text" then
+        self.data = data or "Button"
+    end
+    
 
     self.font = font or fonts.h
 
@@ -58,10 +65,16 @@ function Button:draw()
     LG.setLineWidth(self.strokeSize)
     LG.rectangle("line", self.x, self.y, self.w, self.h, self.radius, self.radius)
 
-    local tx = self.x + (self.w / 2) - (self.font:getWidth(self.data) / 2)
-    local ty = self.y + (self.h / 2) - (self.font:getHeight() / 2)
-    LG.print(self.data, tx, ty)
-
+    if self.dataType == "Text" then
+        local tx = self.x + (self.w / 2) - (self.font:getWidth(self.data) / 2)
+        local ty = self.y + (self.h / 2) - (self.font:getHeight() / 2)
+        LG.print(self.data, tx, ty)
+    else
+        local cx = self.x + (self.w / 2) - self.data:getWidth()/2
+        local cy = self.x + (self.h / 2) - self.data:getHeight()/2
+        LG.draw(self.data, cx, cy)
+    end
+    
     LG.setColor(1,1,1)
 end
 
