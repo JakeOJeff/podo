@@ -15,7 +15,20 @@ function Button.new(func, x, y, dataType, data, font, padding, radius, strokeSiz
     self.dataType = dataType or "Text"
 
     if dataType == "Image" then
-        self.data = LG.newImage("assets/"..data)
+        local imgs = {}
+        
+        for image in data:gmatch("%S+") do
+            table.insert(imgs, image)
+        end
+        
+        if #imgs == 2 then
+            self.data = LG.newImage("assets/" .. imgs[1])
+            self.dataHover = LG.newImage("assets/" .. imgs[2])
+        elseif #imgs == 1 then
+            self.data = LG.newImage("assets/" .. imgs[1])
+        else
+            self.data = LG.newImage("assets/" .. data)
+        end
     elseif dataType == "Text" then
         self.data = data or "Button"
     end

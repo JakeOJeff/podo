@@ -25,7 +25,7 @@ Button = require "ui.button"
 function love.load()
     TIMER = TIMERS[MODE]
 
-    Butt = Button.new(SwitchStatus, 200, 200, "Image", "play.png", fonts.m, 20, 200)
+    Butt = Button.new(SwitchStatus, 200, 200, "Image", "play.png pause.png", fonts.m, 20, 200)
 
 end
 
