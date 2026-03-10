@@ -2,9 +2,12 @@ Button = {}
 Button.__index = Button
 ActiveButtons = {}
 
-function Button.new(x, y, data, font, padding, radius, strokeSize, color, stroke, colorHover, strokeHover, duration)
+function Button.new(func, x, y, data, font, padding, radius, strokeSize, color, stroke, colorHover, strokeHover, duration)
     local self = setmetatable({}, Button)
 
+    self.func = func or function ()
+        
+    end
 
     self.x = x or 10
     self.y = y or 10
@@ -22,27 +25,48 @@ function Button.new(x, y, data, font, padding, radius, strokeSize, color, stroke
     self.h = self.font:getHeight() + self.padding
     
     self.color = color or {1, 1, 1}
-    self.stroke = stroke or nil
+    self.stroke = stroke or {0, 0, 0}
     self.colorHover = colorHover or {0.7, 0.7, 0.7}
-    self.strokeHover = strokeHover or nil
+    self.strokeHover = strokeHover or {0.3, 0.3, 0.3}
 
+    self.hovered = false
 
     table.insert(ActiveButtons, self)
     return self
 end
 
 function Button:update(dt)
-    
+    local mx, my = love.mouse.getPosition()
+
+    if mx > self.x and mx < self.x + self.w and my > self.y and my < self.y + self.h then
+        self.hovered = true
+    else
+        self.hovered = false
+    end
 end
 
 function Button:draw()
+    local bg = self.hovered and self.colorHover or self.color
+    local fg = self.hovered and self.strokeHover or self.stroke
+
     LG.setFont(self.font)
 
-    LG.setColor(self.color)
-    LG.rectangle("fill",self.x, self.y, self.w, self.h)
+    LG.setColor(bg)
+    LG.rectangle("fill", self.x, self.y, self.w, self.h, self.radius, self.radius)
 
-    LG.setColor(self.stroke)
-    LG.print(self.data, self.x + self.w/2, self.y + self.h/2 )
+    LG.setColor(fg)
+    LG.setLineWidth(self.strokeSize)
+    LG.rectangle("line", self.x, self.y, self.w, self.h, self.radius, self.radius)
+
+    local tx = self.x + (self.w / 2) - (self.font:getWidth(self.data) / 2)
+    local ty = self.y + (self.h / 2) - (self.font:getHeight() / 2)
+    LG.print(self.data, tx, ty)
+end
+
+function Button:mousepressed()
+    if self.hovered then
+        self.func()        
+    end
 end
 
 
