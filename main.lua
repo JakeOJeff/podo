@@ -69,7 +69,7 @@ function love.load()
     end, 10, 10, "Text", "LBR", fonts.m)
 
     TimerGroup = Group.new(10, 20, 10, { POMO, SBR, LBR})
-    TimerGroup:setPosition(wW/2 - TimerGroup.w/2, 10)
+    TimerGroup:setPosition(wW/2 - TimerGroup.w/2, 40)
 end
 
 function updateTimer()
@@ -83,7 +83,23 @@ function love.update(dt)
         TIMER = math.max(0, TIMER - 1 * dt)
     end
 
+    if TIMER <= 0 then
+        
+        if MODE == "POMO" then
+            MODE = "SBR"
+            TIMER = TIMERS[MODE]
+        end
+    end
+
     UpdateButtons(dt)
+end
+
+function LoopComplete()
+    for i, v in ipairs(countDisplays) do
+        if v.completing and not v.completed then
+            v.completed = true
+        end
+    end
 end
 
 function love.keypressed(key)
