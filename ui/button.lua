@@ -22,8 +22,8 @@ function Button.new(func, x, y, dataType, data, font, padding, radius, strokeSiz
 
     self.color = color or {1, 1, 1}
     self.stroke = stroke or {0, 0, 0}
-    self.colorHover = colorHover or {0.7, 0.7, 0.7}
-    self.strokeHover = strokeHover or {0.3, 0.3, 0.3}
+    self.colorHover = colorHover or {0.9, 0.9, 0.9}
+    self.strokeHover = strokeHover or {0.1, 0.1, 0.1}
     self.hovered = false
     
     -- Tween and scale properties
