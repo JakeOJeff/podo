@@ -20,8 +20,9 @@ function Group.new(x, y, margin, children, orientation)
     for _, v in ipairs(self.items) do
         if self.orientation == "flex" then
             v.x = self.x + self.w
+            v.y = self.y  -- Add this line
         elseif self.orientation == "flex-v" then
-             v.y = self.y + self.margin + self.h
+             v.y = self.y + self.h
         end
         
         self.w = self.w + self.margin + v.w 
@@ -41,8 +42,9 @@ function Group:setPosition(x, y)
     for _, v in ipairs(self.items) do
         if self.orientation == "flex" then
             v.x = self.x + self.w
+            v.y = self.y  -- Add this line
         elseif self.orientation == "flex-v" then
-             v.y = self.y + self.margin + self.h
+             v.y = self.y + self.h
         end
         
         self.w = self.w + self.margin + v.w 

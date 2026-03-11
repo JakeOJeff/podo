@@ -49,11 +49,11 @@ function love.load()
         h = wH / 2
     }
     displayBox.x = wW/2 - displayBox.w/2
-    displayBox.y = 50
+    displayBox.y = 70
 
     Butt   = Button.new(SwitchStatus, 200, 300, "Image", "play.png", fonts.m, 20, 200)
     Butt.x = wW / 2 - Butt.w / 2
-    Butt.y = wH / 1.25 - Butt.h / 2
+    Butt.y = wH / 1.2 - Butt.h / 2
 
     POMO = Button.new(function ()
         MODE = "POMO"
@@ -69,7 +69,7 @@ function love.load()
     end, 10, 10, "Text", "LBR", fonts.m)
 
     TimerGroup = Group.new(10, 20, 10, { POMO, SBR, LBR})
-    TimerGroup:setPosition(wW/2 - TimerGroup.w/2, 40)
+    TimerGroup:setPosition(wW/2 - TimerGroup.w/2, 70)
 end
 
 function updateTimer()
@@ -88,7 +88,7 @@ function love.update(dt)
         if MODE == "POMO" then
             MODE = "SBR"
             TIMER = TIMERS[MODE]
-        elseif MODE == "SBR" then
+        elseif MODE == "SBR" or MODE == "LBR" then
             MODE = "POMO"
             TIMER = TIMERS[MODE]
             LoopComplete()
