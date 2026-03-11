@@ -25,8 +25,8 @@ Button = require "ui.button"
 function love.load()
     TIMER = TIMERS[MODE]
 
-    Butt = Button.new(SwitchStatus, 200, 200, "Image", "play.png pause.png", fonts.m, 20, 200)
-
+    Butt = Button.new(SwitchStatus, 200, 400, "Image", "play.png", fonts.m, 20, 200)
+    Butt.x = wW/2 - Butt.w/2
 end
 
 function love.update(dt)
@@ -48,6 +48,7 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
+    
     LG.print(string.format("%02d:%02d", math.floor(TIMER / 60), math.floor(TIMER % 60)))
 
     DrawButtons()
@@ -56,7 +57,10 @@ end
 function SwitchStatus()
     if STATUS == "PAUSED" then
         STATUS = "STARTED"
+        Butt.data = LG.newImage("assets/play.png")
     else
         STATUS = "PAUSED"
+        Butt.data = LG.newImage("assets/pause.png")
     end
 end
+
