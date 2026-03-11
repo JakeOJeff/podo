@@ -29,12 +29,25 @@ function Group.new(x, y, margin, children, orientation)
     end
 
     table.insert(ActiveGroups, self)
-
+    return self
 end
 
 function Group:setPosition(x, y)
     self.x = x
     self.y = y
+
+    self.w = 0
+    self.h = 0
+    for _, v in ipairs(self.items) do
+        if self.orientation == "flex" then
+            v.x = self.x + self.w
+        elseif self.orientation == "flex-v" then
+             v.y = self.y + self.margin + self.h
+        end
+        
+        self.w = self.w + self.margin + v.w 
+        self.h = self.h + self.margin + v.h
+    end
 end
 
 

@@ -69,6 +69,7 @@ function love.load()
     end, 10, 10, "Text", "LBR", fonts.m)
 
     TimerGroup = Group.new(10, 20, 10, { POMO, SBR, LBR})
+    TimerGroup:setPosition(wW/2 - TimerGroup.w/2, 10)
 end
 
 function updateTimer()
