@@ -14,7 +14,7 @@ function love.load()
     wW, wH = love.graphics.getDimensions()
 
     fonts  = {
-        xH = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 55),
+        xH = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 70),
         h = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 40),
         m = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 25),
         s = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 10),
@@ -22,6 +22,7 @@ function love.load()
     }
 
     Button = require "ui.button"
+    Group = require "ui.group"
     TIMER  = TIMERS[MODE]
 
     displayBox = {
@@ -33,7 +34,10 @@ function love.load()
 
     Butt   = Button.new(SwitchStatus, 200, 300, "Image", "play.png", fonts.m, 20, 200)
     Butt.x = wW / 2 - Butt.w / 2
-    Butt.y = wH / 1.3 - Butt.h / 2
+    Butt.y = wH / 1.25 - Butt.h / 2
+
+
+
 end
 
 function love.update(dt)
