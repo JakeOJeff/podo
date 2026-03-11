@@ -24,6 +24,13 @@ function love.load()
     Button = require "ui.button"
     TIMER  = TIMERS[MODE]
 
+    displayBox = {
+        w = wW / 1.5,
+        h = wH / 2
+    }
+    displayBox.x = wW/2 - displayBox.w/2
+    displayBox.y = 50
+
     Butt   = Button.new(SwitchStatus, 200, 300, "Image", "play.png", fonts.m, 20, 200)
     Butt.x = wW / 2 - Butt.w / 2
     Butt.y = wH / 1.3 - Butt.h / 2
@@ -48,14 +55,14 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
-    local displayBox = {
 
-    }
-    -- LG.rectangle("fill", )
+    LG.setColor(0.5, 0.5, 0.5)
+    LG.rectangle("fill", displayBox.x, displayBox.y, displayBox.w  , displayBox.h ,20, 20)
 
+    LG.setColor(1,1,1)
     LG.setFont(fonts.xH)
     local time = string.format("%02d:%02d", math.floor(TIMER / 60), math.floor(TIMER % 60))
-    LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2, 200)
+    LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2, displayBox.y + displayBox.h/2 - fonts.xH:getHeight()/2)
 
     DrawButtons()
 end
