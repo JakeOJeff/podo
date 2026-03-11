@@ -14,7 +14,7 @@ function love.load()
     wW, wH = love.graphics.getDimensions()
 
     fonts  = {
-        xH = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 70),
+        xH = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 100),
         h = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 40),
         m = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 25),
         s = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 10),
@@ -24,6 +24,25 @@ function love.load()
     Button = require "ui.button"
     Group = require "ui.group"
     TIMER  = TIMERS[MODE]
+
+    countDisplays = {
+        {
+            completed = false,
+            completing = true,
+        },
+        {
+            completed = false,
+            completing = false,
+        },
+        {
+            completed = false,
+            completing = false,
+        },
+        {
+            completed = false,
+            completing = false,
+        },
+    }
 
     displayBox = {
         w = wW / 1.5,
@@ -36,11 +55,29 @@ function love.load()
     Butt.x = wW / 2 - Butt.w / 2
     Butt.y = wH / 1.25 - Butt.h / 2
 
+    POMO = Button.new(function ()
+        MODE = "POMO"
+        updateTimer()
+    end, 10, 10, "Text", "POMO", fonts.m)
+    SBR = Button.new(function ()
+        MODE = "SBR"
+        updateTimer()
+    end, 10, 10, "Text", "SBR", fonts.m)
+    LBR = Button.new(function ()
+        MODE = "LBR"
+        updateTimer()
+    end, 10, 10, "Text", "LBR", fonts.m)
 
-
+    TimerGroup = Group.new(10, 20)
 end
 
+function updateTimer()
+    TIMER  = TIMERS[MODE]
+end
+
+
 function love.update(dt)
+
     if STATUS ~= "PAUSED" and TIMER > 0 then
         TIMER = math.max(0, TIMER - 1 * dt)
     end
@@ -68,6 +105,29 @@ function love.draw()
     local time = string.format("%02d:%02d", math.floor(TIMER / 60), math.floor(TIMER % 60))
     LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2, displayBox.y + displayBox.h/2 - fonts.xH:getHeight()/2)
 
+
+    local cDW = 5
+    local cDM = 8
+
+    local totalWidth = (#countDisplays * cDW) + ((#countDisplays - 1) * cDM)
+    local cDX = wW/2 - totalWidth/2
+
+    for i, v in ipairs(countDisplays) do
+        local x = cDX + (i - 1) * (cDW + cDM)
+
+        local mode = "line"
+
+        if v.completed then
+            mode = "fill"
+        elseif v.completing and STATUS == "STARTED" then
+            if math.floor(love.timer.getTime() * 2) % 2 == 0 then
+                mode = "fill"
+            else
+                mode = "line"
+            end
+        end
+        LG.circle(mode, x, Butt.y - 20, cDW)
+    end
     DrawButtons()
 end
 

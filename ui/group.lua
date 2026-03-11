@@ -32,6 +32,11 @@ function Group.new(x, y, margin, children, orientation)
 
 end
 
+function Group:setPosition(x, y)
+    self.x = x
+    self.y = y
+end
+
 
 function Group:insert(item)
     table.insert(self.items, item)
