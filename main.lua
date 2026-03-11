@@ -80,7 +80,7 @@ end
 function love.update(dt)
 
     if STATUS ~= "PAUSED" and TIMER > 0 then
-        TIMER = math.max(0, TIMER - 1 * dt)
+        TIMER = math.max(0, TIMER - 500 * dt)
     end
 
     if TIMER <= 0 then
@@ -88,6 +88,18 @@ function love.update(dt)
         if MODE == "POMO" then
             MODE = "SBR"
             TIMER = TIMERS[MODE]
+        elseif MODE == "SBR" then
+            MODE = "POMO"
+            TIMER = TIMERS[MODE]
+            LoopComplete()
+        end
+    end
+
+    for i, v in ipairs(TimerGroup.items) do
+        if v.data == MODE then
+            v.color = {0.7, 0.7, 0.7}
+        else
+            v.color = {1, 1, 1}
         end
     end
 
@@ -95,10 +107,17 @@ function love.update(dt)
 end
 
 function LoopComplete()
+    local foundIncomplete = false
     for i, v in ipairs(countDisplays) do
         if v.completing and not v.completed then
             v.completed = true
         end
+
+        if not v.completing and not foundIncomplete then
+            v.completing = true
+            foundIncomplete = true
+        end
+
     end
 end
 
