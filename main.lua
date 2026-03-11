@@ -13,6 +13,7 @@ TIMERS = {
 wW, wH = love.graphics.getDimensions()
 
 fonts = {
+    xH = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 55),
     h = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 40),
     m = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 25),
     s = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 10),
@@ -48,8 +49,15 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
-    
-    LG.print(string.format("%02d:%02d", math.floor(TIMER / 60), math.floor(TIMER % 60)))
+
+    local displayBox = {
+
+    }
+    -- LG.rectangle("fill", )
+
+    LG.setFont(fonts.xH)
+    local time = string.format("%02d:%02d", math.floor(TIMER / 60), math.floor(TIMER % 60))
+    LG.print(time, wW/2 - fonts.xH:getWidth(time)/2 , 300)
 
     DrawButtons()
 end
@@ -57,10 +65,10 @@ end
 function SwitchStatus()
     if STATUS == "PAUSED" then
         STATUS = "STARTED"
-        Butt.data = LG.newImage("assets/play.png")
-    else
-        STATUS = "PAUSED"
         Butt.data = LG.newImage("assets/pause.png")
+    elseif STATUS == "STARTED" then
+        STATUS = "PAUSED"
+        Butt.data = LG.newImage("assets/play.png")
     end
 end
 
