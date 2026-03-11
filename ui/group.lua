@@ -24,22 +24,14 @@ function Group.new(x, y, margin, children, orientation)
              v.y = self.y + self.margin + self.h
         end
         
-        self.w = self.w + self.marging + v.w 
-        self.h = self.h + self.marging + v.h
-
-
+        self.w = self.w + self.margin + v.w 
+        self.h = self.h + self.margin + v.h
     end
-
 
     table.insert(ActiveGroups, self)
 
 end
 
-function Group:draw()
-    for _, v in ipairs(self.items) do
-        v:draw()
-    end
-end
 
 function Group:insert(item)
     table.insert(self.items, item)
