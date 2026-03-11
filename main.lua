@@ -68,7 +68,7 @@ function love.load()
         updateTimer()
     end, 10, 10, "Text", "LBR", fonts.m)
 
-    TimerGroup = Group.new(10, 20)
+    TimerGroup = Group.new(10, 20, 10, { POMO, SBR, LBR})
 end
 
 function updateTimer()
