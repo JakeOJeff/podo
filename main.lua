@@ -1,20 +1,23 @@
 function love.load()
-    LG            = love.graphics
+    LG         = love.graphics
 
     -- Declaring Global variables
-    TIMER         = 0
-    STATUS        = "PAUSED"
-    MODE          = "POMO" -- [ POMO, SBR, LBR ]
-    TIMERS        = {
+    TIMER      = 0
+    STATUS     = "PAUSED"
+    PREV_MODE  = "POMO"
+    MODE       = "POMO" -- [ POMO, SBR, LBR ]
+    TIMERS     = {
         ["POMO"] = 25 * 60,
         ["SBR"] = 5 * 60,
         ["LBR"] = 10 * 60,
         ["BEEP"] = 5
     }
 
-    wW, wH        = love.graphics.getDimensions()
+    DEBUG_MODE = false
 
-    fonts         = {
+    wW, wH     = love.graphics.getDimensions()
+
+    fonts      = {
         xH = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 100),
         h = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 40),
         m = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 25),
@@ -22,16 +25,16 @@ function love.load()
 
     }
 
-    currentKey    = ""
+    currentKey = ""
 
-    Button        = require "ui.button"
-    Group         = require "ui.group"
-    
-    effects       = require "effects"
+    Button     = require "ui.button"
+    Group      = require "ui.group"
 
-    TIMER         = TIMERS[MODE]
+    effects    = require "effects"
 
-    BEEP_TIMER    = 3
+    TIMER      = TIMERS[MODE]
+
+    BEEP_TIMER = 3
 
 
     countDisplays = {
@@ -65,14 +68,17 @@ function love.load()
     Butt.y        = wH / 1.2 - Butt.h / 2
 
     POMO          = Button.new(function()
+        PREV_MODE = MODE
         MODE = "POMO"
         updateTimer()
     end, 10, 10, "Text", "POMO", fonts.m)
     SBR           = Button.new(function()
+        PREV_MODE = MODE
         MODE = "SBR"
         updateTimer()
     end, 10, 10, "Text", "SBR", fonts.m)
     LBR           = Button.new(function()
+        PREV_MODE = MODE
         MODE = "LBR"
         updateTimer()
     end, 10, 10, "Text", "LBR", fonts.m)
@@ -81,7 +87,6 @@ function love.load()
     TimerGroup:setPosition(wW / 2 - TimerGroup.w / 2, 25)
 
     effects:load()
-
 end
 
 function updateTimer()
@@ -90,21 +95,31 @@ end
 
 function love.update(dt)
     if STATUS ~= "PAUSED" and TIMER > 0 then
-        TIMER = math.max(0, TIMER - 200 * dt)
+        TIMER = math.max(0, TIMER - 1 * dt)
     end
 
     effects:update(dt)
 
     if TIMER <= 0 then
-        if MODE == "POMO" then
-            MODE = "SBR"
-            TIMER = TIMERS[MODE]
-        elseif MODE == "SBR" or MODE == "LBR" then
-            MODE = "POMO"
-            TIMER = TIMERS[MODE]
-            LoopComplete()
+        if MODE == "BEEP" then
+            if PREV_MODE == "POMO" then
+                PREV_MODE = MODE
+                MODE = "SBR"
+                updateTimer()
+            elseif PREV_MODE == "SBR" or PREV_MODE == "LBR" then
+                PREV_MODE = MODE
+
+                MODE = "POMO"
+                updateTimer()
+
+                LoopComplete()
+            end
+        else
+            PREV_MODE = MODE
+
+            MODE = "BEEP"
+            updateTimer()
         end
-        
     end
 
     for i, v in ipairs(TimerGroup.items) do
@@ -170,19 +185,18 @@ function love.keypressed(key)
         currentKey = key
     elseif key == "t" then
         MODE = "POMO"
-        TIMER = TIMERS[MODE]
         updateTimer()
         currentKey = key
     elseif key == "y" then
         MODE = "SBR"
-        TIMER = TIMERS[MODE]
         updateTimer()
         currentKey = key
     elseif key == "u" then
         MODE = "LBR"
-        TIMER = TIMERS[MODE]
         updateTimer()
         currentKey = key
+    elseif key == "z" then
+        DEBUG_MODE = not DEBUG_MODE
     end
 end
 
@@ -191,8 +205,10 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
-    LG.setColor(0, 1, 0, 0.5)
-    LG.rectangle("fill", displayBox.x - 5, displayBox.y - 5, displayBox.w + 10, displayBox.h + 10, 10, 10)
+    if MODE == "BEEP" then
+        LG.setColor(0, 1, 0, 0.5)
+        LG.rectangle("fill", displayBox.x - 5, displayBox.y - 5, displayBox.w + 10, displayBox.h + 10, 10, 10)
+    end
 
 
     LG.setColor(0.5, 0.5, 0.5)
@@ -201,15 +217,16 @@ function love.draw()
     LG.setColor(1, 1, 1)
     LG.setFont(fonts.h)
     LG.print(currentKey, 15, 10)
-        effects:draw()
+    effects:draw()
 
     LG.setFont(fonts.xH)
     local time = string.format("%02d:%02d", math.floor(TIMER / 60), math.floor(TIMER % 60))
-        
+
     LG.setColor(0.7, 0.7, 0.7)
-    LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2 + 2, displayBox.y + displayBox.h / 2 - fonts.xH:getHeight() / 2 + 2)
-    LG.setColor(1,1,1)
-    
+    LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2 + 2,
+        displayBox.y + displayBox.h / 2 - fonts.xH:getHeight() / 2 + 2)
+    LG.setColor(1, 1, 1)
+
     LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2, displayBox.y + displayBox.h / 2 - fonts.xH:getHeight() / 2)
 
 
