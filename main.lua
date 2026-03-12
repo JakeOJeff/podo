@@ -138,6 +138,10 @@ function love.keypressed(key)
                 completing = false
             })
         end
+    elseif key == "q" then
+        if #countDisplays > 2 then
+            table.remove(countDisplays, #countDisplays)
+        end
     end
 end
 
