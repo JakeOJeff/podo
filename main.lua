@@ -124,6 +124,20 @@ end
 function love.keypressed(key)
     if key == "space" then
         SwitchStatus()
+    elseif key == "r" then
+        for _, v in ipairs(countDisplays) do
+            v.completed = false
+            v.completing = false
+        end
+        countDisplays[1].completing = true
+
+    elseif key == "e" then
+        if #countDisplays < 10 then
+            table.insert(countDisplays, {
+                completed = false,
+                completing = false
+            })
+        end
     end
 end
 
