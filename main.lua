@@ -8,7 +8,8 @@ function love.load()
     TIMERS        = {
         ["POMO"] = 25 * 60,
         ["SBR"] = 5 * 60,
-        ["LBR"] = 10 * 60
+        ["LBR"] = 10 * 60,
+        ["BEEP"] = 5
     }
 
     wW, wH        = love.graphics.getDimensions()
@@ -90,14 +91,11 @@ end
 function love.update(dt)
     if STATUS ~= "PAUSED" and TIMER > 0 then
         TIMER = math.max(0, TIMER - 200 * dt)
-        if TIMER <= 0 then
-            BEEP_TIMER = BEEP_TIMER - 1 * dt
-        end
     end
 
     effects:update(dt)
 
-    if TIMER <= 0 and BEEP_TIMER <= 0 then
+    if TIMER <= 0 then
         if MODE == "POMO" then
             MODE = "SBR"
             TIMER = TIMERS[MODE]
@@ -193,6 +191,10 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
+    LG.setColor(0, 1, 0, 0.5)
+    LG.rectangle("fill", displayBox.x - 5, displayBox.y - 5, displayBox.w + 10, displayBox.h + 10, 10, 10)
+
+
     LG.setColor(0.5, 0.5, 0.5)
     LG.rectangle("fill", displayBox.x, displayBox.y, displayBox.w, displayBox.h, 10, 10)
 
