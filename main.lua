@@ -30,6 +30,7 @@ function love.load()
 
     TIMER         = TIMERS[MODE]
 
+    BEEP_TIMER    = 3
 
 
     countDisplays = {
@@ -88,21 +89,24 @@ end
 
 function love.update(dt)
     if STATUS ~= "PAUSED" and TIMER > 0 then
-        TIMER = math.max(0, TIMER - 1 * dt)
+        TIMER = math.max(0, TIMER - 200 * dt)
+        if TIMER <= 0 then
+            BEEP_TIMER = BEEP_TIMER - 1 * dt
+        end
     end
 
     effects:update(dt)
 
-    if TIMER <= 0 then
-        if MODE == "POMO" then
-            MODE = "SBR"
-            TIMER = TIMERS[MODE]
-        elseif MODE == "SBR" or MODE == "LBR" then
-            MODE = "POMO"
-            TIMER = TIMERS[MODE]
-            LoopComplete()
-        end
-    end
+    -- if TIMER <= 0 then
+    --     if MODE == "POMO" then
+    --         MODE = "SBR"
+    --         TIMER = TIMERS[MODE]
+    --     elseif MODE == "SBR" or MODE == "LBR" then
+    --         MODE = "POMO"
+    --         TIMER = TIMERS[MODE]
+    --         LoopComplete()
+    --     end
+    -- end
 
     for i, v in ipairs(TimerGroup.items) do
         if v.data == MODE then
