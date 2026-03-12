@@ -142,6 +142,12 @@ function love.keypressed(key)
         if #countDisplays > 2 then
             table.remove(countDisplays, #countDisplays)
         end
+    elseif key == "w" then
+        if TIMERS[MODE] < 999 then
+           
+        TIMERS[MODE] = TIMERS[MODE] + 60
+        updateTimer() 
+        end
     end
 end
 
