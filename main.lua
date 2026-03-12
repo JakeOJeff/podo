@@ -88,7 +88,7 @@ end
 
 function love.update(dt)
     if STATUS ~= "PAUSED" and TIMER > 0 then
-        TIMER = math.max(0, TIMER - 500 * dt)
+        TIMER = math.max(0, TIMER - 10 * dt)
     end
 
     effects:update(dt)
