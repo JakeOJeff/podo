@@ -41,8 +41,10 @@ function effects:load()
     for i = 1, self.square_columns do
         for j = 1, self.square_rows do
             table.insert(self.squares, {
-                x = (i - 1) * self.square_rows,
-                y = (j - 1) * self.square_columns
+                x = love.math.random(0, wW),
+                y = love.math.random(0, wH),
+                tX = (i - 1) * self.square_rows,
+                tY = (j - 1) * self.square_columns
             })
         end
     end
