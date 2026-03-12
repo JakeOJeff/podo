@@ -189,14 +189,20 @@ end
 
 function love.draw()
     LG.setColor(0.5, 0.5, 0.5)
-    LG.rectangle("fill", displayBox.x, displayBox.y, displayBox.w, displayBox.h, 20, 20)
+    LG.rectangle("fill", displayBox.x, displayBox.y, displayBox.w, displayBox.h, 10, 10)
 
     LG.setColor(1, 1, 1)
     LG.setFont(fonts.h)
     LG.print(currentKey, 15, 10)
-    LG.setColor(1, 1, 1)
+        effects:draw()
+
     LG.setFont(fonts.xH)
     local time = string.format("%02d:%02d", math.floor(TIMER / 60), math.floor(TIMER % 60))
+        
+    LG.setColor(0.7, 0.7, 0.7)
+    LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2 + 2, displayBox.y + displayBox.h / 2 - fonts.xH:getHeight() / 2 + 2)
+    LG.setColor(1,1,1)
+    
     LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2, displayBox.y + displayBox.h / 2 - fonts.xH:getHeight() / 2)
 
 
@@ -206,7 +212,6 @@ function love.draw()
     local totalWidth = (#countDisplays * cDW) + ((#countDisplays - 1) * cDM)
     local cDX = wW / 2 - totalWidth / 2
 
-    effects:draw()
     for i, v in ipairs(countDisplays) do
         local x = cDX + (i - 1) * (cDW + cDM)
 

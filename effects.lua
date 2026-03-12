@@ -21,8 +21,8 @@ function effects:load()
                 y = 0,
                 sX = love.math.random(0, wW),
                 sY = love.math.random(0, wH),
-                tX = displayBox.x + (i - 1) * self.square_rows,
-                tY = displayBox.y +(j - 1) * self.square_columns,
+                tX = displayBox.x + (i - 1) * self.square_width,
+                tY = displayBox.y +(j - 1) * self.square_height,
                 duration = (i * j)/(self.square_rows * self.square_columns) * 3,
             }
             a.x = a.sX
@@ -44,11 +44,11 @@ function effects:update(dt)
 end
 
 function effects:draw()
-    LG.setColor(1,1,1)
+    LG.setColor(0.9, 0.9, 0.9, 0.5)
     for i = 1, self.square_rows do
         for j = 1, self.square_columns do
-            
-            LG.rectangle("fill", self.squares[i][j].x, self.squares[i][j].y, self.square_width, self.square_height)
+            local sq = self.squares[i][j]
+            LG.rectangle("fill", math.floor(sq.x), math.floor(sq.y), self.square_width, self.square_height, 40, 40)
         end
     end
 end
