@@ -95,7 +95,7 @@ end
 
 function love.update(dt)
     if STATUS ~= "PAUSED" and TIMER > 0 then
-        TIMER = math.max(0, TIMER - 1 * dt)
+        TIMER = math.max(0, TIMER - 1 * (DEBUG_MODE and 200 or 1) * dt)
     end
 
     effects:update(dt)
@@ -206,7 +206,7 @@ end
 
 function love.draw()
     if MODE == "BEEP" then
-        LG.setColor(0, 1, 0, 0.5)
+        LG.setColor(0, 1, 0, math.sin(love.timer.getTime()))
         LG.rectangle("fill", displayBox.x - 5, displayBox.y - 5, displayBox.w + 10, displayBox.h + 10, 10, 10)
     end
 
