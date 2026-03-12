@@ -13,6 +13,8 @@ function effects:load()
 
 
     for i = 1, self.square_rows do
+
+        self.squares[i] = {}
         for j = 1, self.square_columns do
             local a = {
                 x = 0,
@@ -27,18 +29,27 @@ function effects:load()
             a.y = a.sY
             a.tween = tween.new(a.duration, a, {x = a.tX, y = a.tY})
             
-            table.insert(self.squares, a)
+            self.squares[i][j] = a
         end
     end
 
 end
 
 function effects:update(dt)
-    
+    for i = 1, self.square_rows do
+        for j = 1, self.square_columns do
+            self.sqaures[i][j].tween(dt)
+        end
+    end
 end
 
 function effects:draw()
-    
+    LG.setColor(1,1,1)
+    for i = 1, self.square_rows do
+        for j = 1, self.square_columns do
+            LG.rectangle("fill", self.squares[i][j].x, self.squares[i][j].y, self.square_width, self.square_height)
+        end
+    end
 end
 
 return effects
