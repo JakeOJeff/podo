@@ -14,6 +14,7 @@ function love.load()
     }
 
     DEBUG_MODE = false
+    OVERRIDE_DEBUG = false
 
     wW, wH     = love.graphics.getDimensions()
 
@@ -24,6 +25,8 @@ function love.load()
         s = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 10),
 
     }
+
+    alarm  = love.audio.newSource("assets/alarm.mp3", "static")
 
     currentKey = ""
 
@@ -95,7 +98,7 @@ end
 
 function love.update(dt)
     if STATUS ~= "PAUSED" and TIMER > 0 then
-        TIMER = math.max(0, TIMER - 1 * (DEBUG_MODE and 200 or 1) * dt)
+        TIMER = math.max(0, TIMER - 1 * (DEBUG_MODE and not  OVERRIDE_DEBUG and 200 or 1) * dt)
     end
 
     effects:update(dt)
@@ -121,6 +124,21 @@ function love.update(dt)
             updateTimer()
         end
     end
+    if MODE == "BEEP" then
+        if not alarm:isPlaying() then
+            alarm:play()    
+        end
+    else
+        alarm:stop()
+    end
+
+    if TIMER <= 4 or MODE == "BEEP" then
+        OVERRIDE_DEBUG = true
+    else
+        OVERRIDE_DEBUG = false
+    end
+
+
 
     for i, v in ipairs(TimerGroup.items) do
         if v.data == MODE then
