@@ -25,7 +25,12 @@ function love.load()
 
     Button        = require "ui.button"
     Group         = require "ui.group"
+    
+    effects       = require "effects"
+
     TIMER         = TIMERS[MODE]
+
+
 
     countDisplays = {
         {
@@ -72,6 +77,9 @@ function love.load()
 
     TimerGroup    = Group.new(10, 20, 10, { POMO, SBR, LBR })
     TimerGroup:setPosition(wW / 2 - TimerGroup.w / 2, 25)
+
+    effects:load()
+
 end
 
 function updateTimer()
@@ -82,6 +90,8 @@ function love.update(dt)
     if STATUS ~= "PAUSED" and TIMER > 0 then
         TIMER = math.max(0, TIMER - 500 * dt)
     end
+
+    effects:update(dt)
 
     if TIMER <= 0 then
         if MODE == "POMO" then
@@ -196,6 +206,7 @@ function love.draw()
     local totalWidth = (#countDisplays * cDW) + ((#countDisplays - 1) * cDM)
     local cDX = wW / 2 - totalWidth / 2
 
+    effects:draw()
     for i, v in ipairs(countDisplays) do
         local x = cDX + (i - 1) * (cDW + cDM)
 
