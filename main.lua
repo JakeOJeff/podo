@@ -1,19 +1,19 @@
 function love.load()
-    LG     = love.graphics
+    LG            = love.graphics
 
     -- Declaring Global variables
-    TIMER  = 0
-    STATUS = "PAUSED"
-    MODE   = "POMO" -- [ POMO, SBR, LBR ]
-    TIMERS = {
+    TIMER         = 0
+    STATUS        = "PAUSED"
+    MODE          = "POMO" -- [ POMO, SBR, LBR ]
+    TIMERS        = {
         ["POMO"] = 25 * 60,
         ["SBR"] = 5 * 60,
         ["LBR"] = 10 * 60
     }
 
-    wW, wH = love.graphics.getDimensions()
+    wW, wH        = love.graphics.getDimensions()
 
-    fonts  = {
+    fonts         = {
         xH = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 100),
         h = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 40),
         m = love.graphics.newFont("fonts/StardosStencil-Bold.ttf", 25),
@@ -21,9 +21,11 @@ function love.load()
 
     }
 
-    Button = require "ui.button"
-    Group = require "ui.group"
-    TIMER  = TIMERS[MODE]
+    currentKey    = ""
+
+    Button        = require "ui.button"
+    Group         = require "ui.group"
+    TIMER         = TIMERS[MODE]
 
     countDisplays = {
         {
@@ -44,47 +46,44 @@ function love.load()
         },
     }
 
-    displayBox = {
+    displayBox    = {
         w = wW / 1.5,
         h = wH / 2
     }
-    displayBox.x = wW/2 - displayBox.w/2
-    displayBox.y = 70
+    displayBox.x  = wW / 2 - displayBox.w / 2
+    displayBox.y  = 70
 
-    Butt   = Button.new(SwitchStatus, 200, 300, "Image", "play.png", fonts.m, 20, 200)
-    Butt.x = wW / 2 - Butt.w / 2
-    Butt.y = wH / 1.2 - Butt.h / 2
+    Butt          = Button.new(SwitchStatus, 200, 300, "Image", "play.png", fonts.m, 20, 200)
+    Butt.x        = wW / 2 - Butt.w / 2
+    Butt.y        = wH / 1.2 - Butt.h / 2
 
-    POMO = Button.new(function ()
+    POMO          = Button.new(function()
         MODE = "POMO"
         updateTimer()
     end, 10, 10, "Text", "POMO", fonts.m)
-    SBR = Button.new(function ()
+    SBR           = Button.new(function()
         MODE = "SBR"
         updateTimer()
     end, 10, 10, "Text", "SBR", fonts.m)
-    LBR = Button.new(function ()
+    LBR           = Button.new(function()
         MODE = "LBR"
         updateTimer()
     end, 10, 10, "Text", "LBR", fonts.m)
 
-    TimerGroup = Group.new(10, 20, 10, { POMO, SBR, LBR})
-    TimerGroup:setPosition(wW/2 - TimerGroup.w/2, 25)
+    TimerGroup    = Group.new(10, 20, 10, { POMO, SBR, LBR })
+    TimerGroup:setPosition(wW / 2 - TimerGroup.w / 2, 25)
 end
 
 function updateTimer()
-    TIMER  = TIMERS[MODE]
+    TIMER = TIMERS[MODE]
 end
 
-
 function love.update(dt)
-
     if STATUS ~= "PAUSED" and TIMER > 0 then
         TIMER = math.max(0, TIMER - 500 * dt)
     end
 
     if TIMER <= 0 then
-        
         if MODE == "POMO" then
             MODE = "SBR"
             TIMER = TIMERS[MODE]
@@ -97,9 +96,9 @@ function love.update(dt)
 
     for i, v in ipairs(TimerGroup.items) do
         if v.data == MODE then
-            v.color = {0.7, 0.7, 0.7}
+            v.color = { 0.7, 0.7, 0.7 }
         else
-            v.color = {1, 1, 1}
+            v.color = { 1, 1, 1 }
         end
     end
 
@@ -117,20 +116,20 @@ function LoopComplete()
             v.completing = true
             foundIncomplete = true
         end
-
     end
 end
 
 function love.keypressed(key)
     if key == "space" then
         SwitchStatus()
+        currentKey = key
     elseif key == "r" then
         for _, v in ipairs(countDisplays) do
             v.completed = false
             v.completing = false
         end
         countDisplays[1].completing = true
-
+        currentKey = key
     elseif key == "e" then
         if #countDisplays < 10 then
             table.insert(countDisplays, {
@@ -138,16 +137,39 @@ function love.keypressed(key)
                 completing = false
             })
         end
+        currentKey = key
     elseif key == "q" then
         if #countDisplays > 2 then
             table.remove(countDisplays, #countDisplays)
         end
+        currentKey = key
     elseif key == "w" then
-        if TIMERS[MODE] < 999 then
-           
-        TIMERS[MODE] = TIMERS[MODE] + 60
-        updateTimer() 
+        if TIMERS[MODE] < 999 * 60 then
+            TIMERS[MODE] = TIMERS[MODE] + 60
+            updateTimer()
         end
+        currentKey = key
+    elseif key == "s" then
+        if TIMERS[MODE] > 60 then
+            TIMERS[MODE] = TIMERS[MODE] - 60
+            updateTimer()
+        end
+        currentKey = key
+    elseif key == "t" then
+        MODE = "POMO"
+        TIMER = TIMERS[MODE]
+        updateTimer()
+        currentKey = key
+    elseif key == "y" then
+        MODE = "SBR"
+        TIMER = TIMERS[MODE]
+        updateTimer()
+        currentKey = key
+    elseif key == "u" then
+        MODE = "LBR"
+        TIMER = TIMERS[MODE]
+        updateTimer()
+        currentKey = key
     end
 end
 
@@ -156,21 +178,23 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
-
     LG.setColor(0.5, 0.5, 0.5)
-    LG.rectangle("fill", displayBox.x, displayBox.y, displayBox.w  , displayBox.h ,20, 20)
+    LG.rectangle("fill", displayBox.x, displayBox.y, displayBox.w, displayBox.h, 20, 20)
 
-    LG.setColor(1,1,1)
+    LG.setColor(1, 1, 1)
+    LG.setFont(fonts.h)
+    LG.print(currentKey, 15, 10)
+    LG.setColor(1, 1, 1)
     LG.setFont(fonts.xH)
     local time = string.format("%02d:%02d", math.floor(TIMER / 60), math.floor(TIMER % 60))
-    LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2, displayBox.y + displayBox.h/2 - fonts.xH:getHeight()/2)
+    LG.print(time, wW / 2 - fonts.xH:getWidth(time) / 2, displayBox.y + displayBox.h / 2 - fonts.xH:getHeight() / 2)
 
 
     local cDW = 5
     local cDM = 8
 
     local totalWidth = (#countDisplays * cDW) + ((#countDisplays - 1) * cDM)
-    local cDX = wW/2 - totalWidth/2
+    local cDX = wW / 2 - totalWidth / 2
 
     for i, v in ipairs(countDisplays) do
         local x = cDX + (i - 1) * (cDW + cDM)
