@@ -138,6 +138,10 @@ function love.update(dt)
         OVERRIDE_DEBUG = false
     end
 
+    if DEBUG_MODE then
+        currentKey = "DEBUG"
+    end
+
 
 
     for i, v in ipairs(TimerGroup.items) do
@@ -224,17 +228,17 @@ end
 
 function love.draw()
     if MODE == "BEEP" then
-        LG.setColor(0, 1, 0, math.sin(love.timer.getTime()))
+        LG.setColor(0, 1, 0, math.sin(love.timer.getTime() * 5))
         LG.rectangle("fill", displayBox.x - 5, displayBox.y - 5, displayBox.w + 10, displayBox.h + 10, 10, 10)
     end
 
 
-    LG.setColor(0.5, 0.5, 0.5)
+    LG.setColor(1, 1, 1, 0.3)
     LG.rectangle("fill", displayBox.x, displayBox.y, displayBox.w, displayBox.h, 10, 10)
 
-    LG.setColor(1, 1, 1)
-    LG.setFont(fonts.h)
-    LG.print(currentKey, 15, 10)
+    -- LG.setColor(1, 1, 1)
+    -- LG.setFont(fonts.m)
+    -- LG.print(currentKey, 15, 10)
     effects:draw()
 
     LG.setFont(fonts.xH)

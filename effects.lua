@@ -33,7 +33,7 @@ function effects:update(dt)
 end
 
 function effects:draw()
-    LG.setColor(0.9, 0.9, 0.9, 0.5)
+    LG.setColor(1,1,1,0.2)
 
     for i = 1, self.square_rows do
         for j = 1, self.square_columns do
