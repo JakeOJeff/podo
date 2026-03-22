@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Jake's Podo!",
+  "version": "1.0",
+  "description": "Lua-Based Podo",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": []
+}
